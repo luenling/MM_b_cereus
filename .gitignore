@@ -1,0 +1,72 @@
+# R files
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+*-Ex.R
+/*.Rcheck/
+.Rproj.user/
+.httr-oauth
+
+ knitr and R markdown default cache directories
+*_cache/
+/cache/
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+.Renviron
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+*~
+
+# SLURM log files
+slurm-*.out
+
+# Snakemake state dir
+/.snakemake
+snakemake_log
+
+# Local config overrides
+/config_local.yaml
+
+# For Python #
+##############
+*.pyc
+.tox/
+.cache/
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.soq
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.lb
+
+# vccode
+.vscode/
