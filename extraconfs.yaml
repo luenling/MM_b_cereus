@@ -1,0 +1,135 @@
+# defining the number of threads used for each process
+#	must be an <integer>
+threads: 2
+
+# defining the sample/file names
+#	Experiment	... <string> without \s \.
+#	Condition{1,}	... <string> without \s \.
+#	rep{1,2,...,N}	... "rep" + \d+
+#	files with {dataset}.{mate1,mate2}.fastq.gz or {dataset}.bam must be in the directory "raw"
+datasets_rna: [ "511971-22_S1",
+            "511973-22_S2",
+            "511974-22_S3",
+            "511975-22_S4",
+            "511976-22_S5",
+            "511977-22_S6",
+            "511978-22_S7",
+            "511984-22_S8",
+            "511985-22_S9",
+            "511986-22_S10",
+            "511987-22_S11",
+            "511988-22_S12",
+            "511990-22_S13",
+            "511991-22_S14",
+            "511992-22_S15",
+            "511993-22_S16"]
+datasets_dna: ["seq-nd-Bc-511999-22_12m_S40"]
+
+
+conditions: ["2h_1mM_NH4Cl",
+             "6h_1mM_NH4Cl",
+             "untreated"]
+
+#sequencing read type PE or SE
+readType: "PE"
+
+
+#bbduk path
+bbduk: '/nobackup/lab_bergthaler/Tools/bbmap/bbduk.sh'
+#bbduk params:
+bbduk-params: 'ktrim=r k=23 mink=8 hdist=1 qtrim=r trimq=10 tbo tpe minlen=50'
+bbduk-adapt:  '/nobackup/lab_bergthaler/Tools/bbmap/resources/adapters.fa'
+
+# mm10 genome:
+mm10_dir : "/nobackup/lab_bergthaler/genomes/mm10/"
+mm10_fasta : "/nobackup/lab_bergthaler/genomes/mm10/GRCm38.primary_assembly.genome.fa"
+mm10_gtf : "/nobackup/lab_bergthaler/genomes/mm10/gencode.vM25.primary_assembly.annotation.gtf"
+mm10_star_idx : "star_mm10_index"
+
+# picard jar:
+picard : "/nobackup/lab_bergthaler/Tools/picard_2.25.4.jar"
+refflat : "/nobackup/lab_bergthaler/genomes/mm10/mm10_goldenPath_refFlat.txt.gz"
+ribos : "/nobackup/lab_bergthaler/genomes/mm10/gencode.vM25.primary_assembly.annotation_rRNA.intervals"
+
+# mmquant:
+mmquant : "/nobackup/lab_bergthaler/Tools/multi-mapping-counter/mmquant"
+
+# coco:
+coco : "/nobackup/lab_bergthaler/Tools/coco/bin/coco"
+coco_gtf : "/nobackup/lab_bergthaler/genomes/mm10/Mus_musculus.GRCm38.102.correct_annotation.gtf"
+
+# salmon parameters
+# path to salmon index directory
+salmon-idx: "/nobackup/lab_bergthaler/genomes/refgenie/data/fa159612d40b1bedea9a279eb24999b3d27145f9dd70dcca/salmon_index/default"
+# path to file holding the mapping between transcript IDs and gene ID
+salmon-t2g: "/nobackup/lab_bergthaler/genomes/Mmusculus/Mmusculus.transcripts2genes.tsv"
+# library type:
+#	"A"	...  Automatic library type detection (see https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype)
+salmon-libtype: "A"
+# additional paramters for salmon forwarded to the salmon call
+salmon-params: " --seqBias --gcBias "
+
+
+#RSeQC bed files
+## download:
+## wget -O mm10.HouseKeepingGenes.bed.gz  https://sourceforge.net/projects/rseqc/files/BED/Mouse_Mus_musculus/mm10.HouseKeepingGenes.bed.gz/download
+## wget -O mm10_GENCODE_vm25.bed.gz https://sourceforge.net/projects/rseqc/files/BED/Mouse_Mus_musculus/mm10_GENCODE_vm25.bed.gz/download
+## wget -O mm10_rRNA.bed.gz https://sourceforge.net/projects/rseqc/files/BED/Mouse_Mus_musculus/mm10_rRNA.bed.gz/download
+rseqc-hkgenes: "/nobackup/lab_bergthaler/genomes/mm10/RSeQC/mm10.HouseKeepingGenes.bed"
+rseqc-ribogenes: "/nobackup/lab_bergthaler/genomes/mm10/RSeQC/mm10_rRNA.bed"
+rseqc-genes: "/nobackup/lab_bergthaler/genomes/mm10/RSeQC/mm10_GENCODE_vm25.bed"
+
+## for qualimap2
+## wget ftp://ftp.ensembl.org/pub/release-102/gtf/mus_musculus/Mus_musculus.GRCm38.102.gtf.gz
+qualimap-gtf: "/nobackup/lab_bergthaler/genomes/mm10/Mus_musculus.GRCm38.102.gtf.gz"
+
+
+
+
+
+
+
+
+# dgea parameters
+# specifiy comparisons to be made: <condition1-condition2::condition1-condition3:: ... >
+#dgea-cmps: "fullFBS_Control-unstim::fullFBS_Control-diaFBS_Control::fullFBS_Control-10nM_DC22::fullFBS_Control-50nM_6MP::fullFBS_Control-100_M_Hypoxanthine::fullFBS_Control-100_M_Adenine"
+dgea-cmps: "diaFBS_Control-unstim::diaFBS_Control-fullFBS_Control::diaFBS_Control-10nM_DC22::diaFBS_Control-50nM_6MP::diaFBS_Control-100_M_Hypoxanthine::diaFBS_Control-100_M_Adenine"
+
+# enrichmentBrowser
+# threshold for significance level alpha
+enrich-pval: "0.05"
+# threshold of fold change enrichment
+enrich-lfc:  "0"
+# permutation for enrichmentbrowser
+enrich-perm: "0"
+# organism in kegg three-letter-code (e.g.: hsa, mmu, cel, dme, rno, etc.)
+enrich-org:  "mmu"
+# gene ID used in the salmon index file (e.g.: ENSEMBL, WORMBASE)
+enrich-ids:  "ENSEMBL"
+# functional annotation source (e.g. hallmark, gobp, reactome, kegg)
+enrich-anno: "hallmark"
+# limit of functions reported in the output
+enrich-show: "200"
+# methods for the gene set analysis: selsection out of 'ora-safe-gsea-gsa-padog-globaltest-roast-camera-gsva-samgs-ebm-mgsa' or 'all'
+enrich-gsMethod: "ora-gsea"
+# methods for the pathway analysis: selection out of 'ggea-spia-pathnet-degraph-ganpa-cepa-topologygsa-netgsa' or 'all'
+enrich-grnMethod: "ggea-cepa"
+
+# compile master table
+## tsv.gz file from biomart containing:
+##	col[0]	Gene stable ID
+##	col[1]	Transcript stable ID
+##	col[3]	Gene description
+##	col[4]	Chromosome/scaffold name
+##	col[5]	Gene start (bp)
+##	col[6]	Gene end (bp)
+##	col[7]	Strand
+##	col[8]	Transcript length (including UTRs and CDS)
+##	col[11]	Transcript count
+##	col[12]	Gene type
+##	col[13]	Transcript type
+masterTab-idMap: "/nobackup/lab_bergthaler/genomes/Mmusculus/biomart_mm.tsv.gz"
+# trimmomatic paramters
+trimmomatic-params: "2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:30"
+# path to a fasta file with the adapter sequences to be used for clipping
+trimmomatic-fasta: "/nobackup/lab_bergthaler/genomes/adaptors/Sequencing_adaptors.fasta"
