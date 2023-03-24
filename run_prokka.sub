@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --job-name=BM_prokka
+#SBATCH --partition=covid
+#SBATCH --qos=covid
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=25
+#SBATCH --time=10:30:00
+#SBATCH --mem=45000
+
+# command fastafilename outdir
+
+#module load prokka
+#module load barrnap
+#module load Bio-SearchIO-hmmer
+#module load HMMER
+conda activate unicycler
+bn=$(basename $1 .fasta )
+prokka --prefix $bn --outdir $2 --genus "Bacillus" --species "Borrelia cereus" --compliant --kingdom Bacteria --cpus 25 --rfam $1 >> ${bn}_prokka.log 2>> ${bn}_prokka_error.log
+

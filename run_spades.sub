@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH --job-name=BM_assembly
+#SBATCH --partition=covid
+#SBATCH --qos=covid
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=25
+#SBATCH --time=13:30:00
+#SBATCH --mem=125000
+
+
+module load SPAdes
+
+spades.py --rna -t 24 -m 120  --pe1-1 trimmed_RNAseq_comb/all_rna_1.fastq.gz --pe1-2 trimmed_RNAseq_comb/all_rna_2.fastq.gz -o all_RNAspades 2>> all_RNAspades_err.log >> all_RNAspades_stdout.log

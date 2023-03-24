@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --job-name=fc
+#SBATCH --partition=covid
+#SBATCH --qos=covid
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=15
+#SBATCH --time=03:30:00
+#SBATCH --mem=15000
+
+mkdir -p log
+sample=$1
+genomeanno=$2
+mkdir -p Featurecounts
+#dUTP stranded, R1F2
+featureCounts -s 2 -p -O -T 15 -t CDS -g ID -C -a $genomeanno \
+-o Featurecounts/${sample}_featurecounts.txt  Mapping/${sample}/${sample}_sorted.bam 

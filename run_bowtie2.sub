@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --job-name=bwt2_map
+#SBATCH --partition=covid
+#SBATCH --qos=covid
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=15
+#SBATCH --time=03:30:00
+#SBATCH --mem=15000
+
+mkdir -p log
+sample=$1
+genomeidx=$2
+mkdir -p Mapping
+mkdir -p Mapping/${sample}
+bowtie2 -p 15 --fast -x $genomeidx -1 trimmed/${sample}_trimm_1.fastq.gz -2 trimmed/${sample}_trimm_2.fastq.gz \
+2> log/${sample}_bowtie.log | samtools sort -T ${sample}_temp -O bam - >  Mapping/${sample}/${sample}_sorted.bam
+samtools index Mapping/${sample}/${sample}_sorted.bam
+samtools stats  Mapping/${sample}/${sample}_sorted.bam > log/${sample}_samtools.stats
+samtools flagstat  Mapping/${sample}/${sample}_sorted.bam > log/${sample}_samtools.flagstat
