@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --job-name=BC_trimm
+#SBATCH --partition=covid
+#SBATCH --qos=covid
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=5
+#SBATCH --time=03:30:00
+#SBATCH --mem=10000
+
+sample=$1
+ADAPTERS=/nobackup/lab_bergthaler/Tools/bbmap/resources/adapters.fa
+BBMAP=/nobackup/lab_bergthaler/Tools/bbmap/
+mkdir -p trimmed
+${BBMAP}/bbduk.sh in1=raw/${sample}_L001_R1_001.fastq.gz in2=raw/${sample}_L001_R2_001.fastq.gz \
+out1=trimmed/${sample}_trimm_1.fastq.gz out2=trimmed/${sample}_trimm_2.fastq.gz tbo qtrim=l ref=$ADAPTERS \
+ktrim=r k=20 mink=11 hdist=1 tpe
